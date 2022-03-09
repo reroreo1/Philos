@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tools.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mac <mac@student.42.fr>                    +#+  +:+       +#+        */
+/*   By: rezzahra <rezzahra@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/06 13:49:02 by mac               #+#    #+#             */
-/*   Updated: 2022/03/08 18:32:52 by mac              ###   ########.fr       */
+/*   Updated: 2022/03/09 16:23:39 by rezzahra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,7 @@ void	args_init(t_philo *philo, int ac, char **av)
 {
 	int	n;
 	int	i;
+
 	i = 0;
 	n = ft_atoi(av[1]);
 	while(i < n)
@@ -50,6 +51,8 @@ void	args_init(t_philo *philo, int ac, char **av)
 			philo[i].meals = -1;
 		philo[i].sleep = ft_atoi(av[4]);
 		philo[i].time_to_die = ft_atoi(av[2]);
+		philo[i].start = time_now();
+		philo[i].dead = 0;
 		i++;
 	}
 }
@@ -67,7 +70,7 @@ void	create_threads(t_philo *philo, int nf)
 	}
 }
 
-long	time_now(void)
+unsigned long long	time_now(void)
 {
 	struct timeval tv;
 
@@ -78,7 +81,9 @@ long	time_now(void)
 void	printing(t_philo *philo, char *msg, long time)
 {
 	pthread_mutex_lock(&philo->print);
-	printf("%ld %d %s\n", time, philo->id, msg);
+	printf("%llu %d %s\n", time - philo->start, philo->id, msg);
 	pthread_mutex_unlock(&philo->print);
+	if (philo->dead == 1)
+		pthread_mutex_lock(&philo->print);
 }
 
