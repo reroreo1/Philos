@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tools.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rezzahra <rezzahra@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mac <mac@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/06 13:49:02 by mac               #+#    #+#             */
-/*   Updated: 2022/03/09 16:23:39 by rezzahra         ###   ########.fr       */
+/*   Updated: 2022/03/10 15:02:00 by mac              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,15 +19,11 @@ void	m_init(t_philo *philo, pthread_mutex_t *forks, int n_p)
 	while(i < n_p)
 	{
 		pthread_mutex_init(&forks[i],NULL);
-		// philo[i].next_fork = &forks[(i + 1) % n_p];
 		i++;
 	}
-
 	i = 0;
 	while(i < n_p)
 	{
-		pthread_mutex_init(&philo->print,NULL);
-		pthread_mutex_init(&philo->die,NULL);
 		philo[i].fork = &forks[i];
 		philo[i].next_fork = &forks[(i + 1) % n_p];
 		i++;
@@ -80,10 +76,13 @@ unsigned long long	time_now(void)
 
 void	printing(t_philo *philo, char *msg, long time)
 {
-	pthread_mutex_lock(&philo->print);
+	pthread_mutex_t print;
+
+	pthread_mutex_init(&print, NULL);
+	pthread_mutex_lock(&print);
 	printf("%llu %d %s\n", time - philo->start, philo->id, msg);
-	pthread_mutex_unlock(&philo->print);
+	pthread_mutex_unlock(&print);
 	if (philo->dead == 1)
-		pthread_mutex_lock(&philo->print);
+		pthread_mutex_lock(&print);
 }
 
