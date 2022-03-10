@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mac <mac@student.42.fr>                    +#+  +:+       +#+        */
+/*   By: rezzahra <rezzahra@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/06 13:28:46 by mac               #+#    #+#             */
-/*   Updated: 2022/03/10 15:22:01 by mac              ###   ########.fr       */
+/*   Updated: 2022/03/10 16:19:42 by rezzahra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,5 +29,4 @@ int main(int ac,char **av)
     create_threads(philos, ft_atoi(av[1]));
 	while (1)
         supervisor(philos);
-    
 }

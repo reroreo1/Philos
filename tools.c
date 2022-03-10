@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tools.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mac <mac@student.42.fr>                    +#+  +:+       +#+        */
+/*   By: rezzahra <rezzahra@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/06 13:49:02 by mac               #+#    #+#             */
-/*   Updated: 2022/03/10 15:02:00 by mac              ###   ########.fr       */
+/*   Updated: 2022/03/10 16:47:34 by rezzahra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,7 @@ void	args_init(t_philo *philo, int ac, char **av)
 		philo[i].time_to_die = ft_atoi(av[2]);
 		philo[i].start = time_now();
 		philo[i].dead = 0;
+		philo[i].last_meal = time_now();
 		i++;
 	}
 }
@@ -81,8 +82,7 @@ void	printing(t_philo *philo, char *msg, long time)
 	pthread_mutex_init(&print, NULL);
 	pthread_mutex_lock(&print);
 	printf("%llu %d %s\n", time - philo->start, philo->id, msg);
-	pthread_mutex_unlock(&print);
-	if (philo->dead == 1)
-		pthread_mutex_lock(&print);
+	if (philo->dead != 1)
+		pthread_mutex_unlock(&print);
 }
 

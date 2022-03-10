@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tools1.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mac <mac@student.42.fr>                    +#+  +:+       +#+        */
+/*   By: rezzahra <rezzahra@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/06 14:58:02 by mac               #+#    #+#             */
-/*   Updated: 2022/03/10 15:24:34 by mac              ###   ########.fr       */
+/*   Updated: 2022/03/10 16:49:09 by rezzahra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,10 +53,10 @@ void    *routine(void *philo)
         pthread_mutex_lock(fay->next_fork);
         printing(fay, msg2, time_now());
         mywayofsleep(fay->eat);
+		fay->last_meal = time_now();
 		total++;
 		if (total > nf * meals && meals > 0)
 			exit(0);
-		fay->last_meal = time_now();
         pthread_mutex_unlock(fay->fork);
         pthread_mutex_unlock(fay->next_fork);
         printing(fay, msg3, time_now());
@@ -80,23 +80,25 @@ void supervisor(t_philo *philo)
 	unsigned long long diff = 0;
 
 	// diff = philo->last_meal;
-	// philo->last_meal = time_now();
 	// if (total > nf && nf > 0)
 	// 		exit(0);
 	int i = 0;
-	while(i < philo[0].n_p)
-	{
-		if ((unsigned long long)philo[i].last_meal - diff > (unsigned long long)philo[i].eat)
-		{
-			philo[i].dead = 1;
-			printing(&philo[i],msg5,time_now());
-		}
-		i++;
-	}	
- 	i=0;
+	// while(i < philo[0].n_p)
+	// {
+	// 	diff = time
+	// 	if ((unsigned long long)philo[i].last_meal - diff > (unsigned long long)philo[i].eat)
+	// 	{
+	// 		philo[i].dead = 1;
+	// 		printing(&philo[i],msg5,time_now());
+	// 	}
+	// 	i++;
+	// }	
+ 	// i=0;
 	while (i < philo[0].n_p)
 	{
 			diff = time_now() - philo[i].last_meal;
+			// printf("diff ===%lld\n",diff);
+			// printf("leaast meal == %lld\n",philo[i].last_meal);
 			if (diff > (unsigned long long)philo[i].time_to_die)
 			{
 				philo[i].dead = 1;
