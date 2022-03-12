@@ -6,7 +6,7 @@
 /*   By: mac <mac@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/06 15:22:24 by mac               #+#    #+#             */
-/*   Updated: 2022/03/10 15:21:39 by mac              ###   ########.fr       */
+/*   Updated: 2022/03/12 18:20:34 by mac              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,10 +39,12 @@ typedef struct s_philo
 	pthread_t 		philo;
 	pthread_mutex_t	*fork;
     pthread_mutex_t *next_fork;
+	pthread_mutex_t *print;
 }               t_philo;
 
+
 int		ft_atoi(char *str);
-void 	args_init(t_philo *philo,int ac, char **av);
+void 	args_init(t_philo *philo,int ac, char **av,pthread_mutex_t *print);
 void	create_threads(t_philo *philo, int nf);
 unsigned long long 	time_now(void);
 void 	*routine(void *philo);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tools.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rezzahra <rezzahra@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mac <mac@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/06 13:49:02 by mac               #+#    #+#             */
-/*   Updated: 2022/03/10 16:47:34 by rezzahra         ###   ########.fr       */
+/*   Updated: 2022/03/12 18:24:59 by mac              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ void	m_init(t_philo *philo, pthread_mutex_t *forks, int n_p)
 		i++;
 	}
 }
-void	args_init(t_philo *philo, int ac, char **av)
+void	args_init(t_philo *philo, int ac, char **av,pthread_mutex_t *print)
 {
 	int	n;
 	int	i;
@@ -50,6 +50,7 @@ void	args_init(t_philo *philo, int ac, char **av)
 		philo[i].start = time_now();
 		philo[i].dead = 0;
 		philo[i].last_meal = time_now();
+		philo[i].print = print;
 		i++;
 	}
 }
@@ -62,6 +63,7 @@ void	create_threads(t_philo *philo, int nf)
 	while(i < nf)
 	{
 		pthread_create(&philo[i].philo, NULL, &routine, (void *)&philo[i]);
+		pthread_detach(philo[i].philo);
 		usleep(100);
 		i++;
 	}
@@ -77,12 +79,9 @@ unsigned long long	time_now(void)
 
 void	printing(t_philo *philo, char *msg, long time)
 {
-	pthread_mutex_t print;
-
-	pthread_mutex_init(&print, NULL);
-	pthread_mutex_lock(&print);
+	pthread_mutex_lock(philo->print);
 	printf("%llu %d %s\n", time - philo->start, philo->id, msg);
 	if (philo->dead != 1)
-		pthread_mutex_unlock(&print);
+		pthread_mutex_unlock(philo->print);
 }
 

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tools1.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rezzahra <rezzahra@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mac <mac@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/06 14:58:02 by mac               #+#    #+#             */
-/*   Updated: 2022/03/10 16:49:09 by rezzahra         ###   ########.fr       */
+/*   Updated: 2022/03/12 18:26:08 by mac              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,31 +78,22 @@ void mywayofsleep(unsigned long long timetosleep)
 void supervisor(t_philo *philo)
 {
 	unsigned long long diff = 0;
-
-	// diff = philo->last_meal;
-	// if (total > nf && nf > 0)
-	// 		exit(0);
 	int i = 0;
-	// while(i < philo[0].n_p)
-	// {
-	// 	diff = time
-	// 	if ((unsigned long long)philo[i].last_meal - diff > (unsigned long long)philo[i].eat)
-	// 	{
-	// 		philo[i].dead = 1;
-	// 		printing(&philo[i],msg5,time_now());
-	// 	}
-	// 	i++;
-	// }	
- 	// i=0;
+	//pthread_mutex_t	deadly;
 	while (i < philo[0].n_p)
 	{
 			diff = time_now() - philo[i].last_meal;
-			// printf("diff ===%lld\n",diff);
-			// printf("leaast meal == %lld\n",philo[i].last_meal);
 			if (diff > (unsigned long long)philo[i].time_to_die)
 			{
+				//pthread_mutex_lock(&deadly);
 				philo[i].dead = 1;
 				printing(&philo[i],msg5,time_now());
+				i = 0;
+				while(i < philo[0].n_p)
+				{
+					pthread_mutex_destroy(philo[i].fork);
+					i++;
+				}
 				exit(0);
 			}
 		i++;
