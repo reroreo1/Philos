@@ -6,7 +6,7 @@
 /*   By: mac <mac@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/06 13:49:02 by mac               #+#    #+#             */
-/*   Updated: 2022/03/12 18:24:59 by mac              ###   ########.fr       */
+/*   Updated: 2022/03/13 17:10:09 by mac              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,7 @@ void	args_init(t_philo *philo, int ac, char **av,pthread_mutex_t *print)
 		philo[i].time_to_die = ft_atoi(av[2]);
 		philo[i].start = time_now();
 		philo[i].dead = 0;
+		philo[i].meals_eaten = 0;
 		philo[i].last_meal = time_now();
 		philo[i].print = print;
 		i++;
