@@ -6,7 +6,7 @@
 /*   By: mac <mac@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/06 15:22:24 by mac               #+#    #+#             */
-/*   Updated: 2022/03/13 17:14:33 by mac              ###   ########.fr       */
+/*   Updated: 2022/03/14 21:09:30 by mac              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,11 +40,10 @@ typedef struct s_philo
 	pthread_t 		philo;
 	pthread_mutex_t	*fork;
     pthread_mutex_t *next_fork;
-	pthread_mutex_t *print;
 }               t_philo;
 
 int		ft_atoi(char *str);
-void 	args_init(t_philo *philo,int ac, char **av,pthread_mutex_t *print);
+void 	args_init(t_philo *philo,int ac, char **av);
 void	create_threads(t_philo *philo, int nf);
 unsigned long long 	time_now(void);
 int 	total_meals_eaten(t_philo *philo);
@@ -53,6 +52,6 @@ void 	m_init(t_philo *philo,pthread_mutex_t *fork,int n_p);
 void 	sleeping(long time);
 void 	printing(t_philo *philo, char *msg, long time);
 void	mywayofsleep(unsigned long long timetosleep);
-void	supervisor(t_philo *philo,pthread_mutex_t *print);
+void	supervisor(t_philo *philo);
 
 #endif

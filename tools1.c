@@ -6,7 +6,7 @@
 /*   By: mac <mac@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/06 14:58:02 by mac               #+#    #+#             */
-/*   Updated: 2022/03/13 17:20:13 by mac              ###   ########.fr       */
+/*   Updated: 2022/03/14 21:12:10 by mac              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,9 @@ void    *routine(void *philo)
 {
     t_philo *fay;
 	fay = (t_philo *)philo;
+	static int total;
+	int n_f = fay->n_p;
+	int meals = fay->meals; 
     while(fay->dead == 0)
     {
         pthread_mutex_lock(fay->fork);
@@ -49,7 +52,9 @@ void    *routine(void *philo)
         pthread_mutex_lock(fay->next_fork);
         printing(fay, msg2, time_now());
         mywayofsleep(fay->eat);
-		fay->meals_eaten++;
+		if(total > meals * n_f && meals > 0)
+			exit(0);
+		total++;
 		fay->last_meal = time_now();
         pthread_mutex_unlock(fay->fork);
         pthread_mutex_unlock(fay->next_fork);
@@ -69,7 +74,7 @@ void mywayofsleep(unsigned long long timetosleep)
 		usleep(400);
 }
 
-void supervisor(t_philo *philo,pthread_mutex_t *print)
+void supervisor(t_philo *philo)
 {
 	unsigned long long diff = 0;
 	int i = 0;
@@ -88,11 +93,8 @@ void supervisor(t_philo *philo,pthread_mutex_t *print)
 					pthread_mutex_destroy(philo[i].fork);
 					i++;
 				}
-				pthread_mutex_destroy(print);
 				exit(0);
 			}
-			else if(total_meals_eaten(philo) == 1)
-				exit(0);
 		i++;
 	}
 }
