@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   data_race.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mac <mac@student.42.fr>                    +#+  +:+       +#+        */
+/*   By: rezzahra <rezzahra@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/13 17:12:51 by mac               #+#    #+#             */
-/*   Updated: 2022/03/13 17:20:19 by mac              ###   ########.fr       */
+/*   Updated: 2022/03/15 02:05:53 by rezzahra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ int total_meals_eaten(t_philo *philo)
         sum += philo[i].meals_eaten;
         i++;
     }
-    if (sum > total)
+    if (sum > total && philo[0].meals > 0)
         return 1;
     return 0;
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tools.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mac <mac@student.42.fr>                    +#+  +:+       +#+        */
+/*   By: rezzahra <rezzahra@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/06 13:49:02 by mac               #+#    #+#             */
-/*   Updated: 2022/03/14 21:08:36 by mac              ###   ########.fr       */
+/*   Updated: 2022/03/15 01:56:28 by rezzahra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,13 +29,18 @@ void	m_init(t_philo *philo, pthread_mutex_t *forks, int n_p)
 		i++;
 	}
 }
-void	args_init(t_philo *philo, int ac, char **av)
+int	args_init(t_philo *philo, int ac, char **av,pthread_mutex_t *print)
 {
 	int	n;
 	int	i;
 
 	i = 0;
 	n = ft_atoi(av[1]);
+	if(!n)
+	{
+		printf("enter a valid number of philosophers\n");
+		return 0;
+	}
 	while(i < n)
 	{
 		philo[i].n_p = n;
@@ -51,8 +56,10 @@ void	args_init(t_philo *philo, int ac, char **av)
 		philo[i].dead = 0;
 		philo[i].meals_eaten = 0;
 		philo[i].last_meal = time_now();
+		philo[i].print = print;
 		i++;
 	}
+	return 1;
 }
 
 void	create_threads(t_philo *philo, int nf)
@@ -77,14 +84,11 @@ unsigned long long	time_now(void)
 	return ((tv.tv_sec * 1000.0) + (tv.tv_usec / 1000.0));
 }
 
-void	printing(t_philo *philo, char *msg, long time)
+void	printing(t_philo *philo, char *msg, long time,pthread_mutex_t *print)
 {
-	pthread_mutex_t print;
-
-	pthread_mutex_init(&print, NULL);
-	pthread_mutex_lock(&print);
+	pthread_mutex_lock(print);
 	printf("%llu %d %s\n", time - philo->start, philo->id, msg);
 	if (philo->dead != 1)
-		pthread_mutex_unlock(&print);
+		pthread_mutex_unlock(print);
 }
 

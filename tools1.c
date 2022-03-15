@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tools1.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mac <mac@student.42.fr>                    +#+  +:+       +#+        */
+/*   By: rezzahra <rezzahra@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/06 14:58:02 by mac               #+#    #+#             */
-/*   Updated: 2022/03/14 21:12:10 by mac              ###   ########.fr       */
+/*   Updated: 2022/03/15 02:05:10 by rezzahra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,25 +42,21 @@ void    *routine(void *philo)
 {
     t_philo *fay;
 	fay = (t_philo *)philo;
-	static int total;
-	int n_f = fay->n_p;
-	int meals = fay->meals; 
-    while(fay->dead == 0)
+	
+    while(!fay->dead)
     {
         pthread_mutex_lock(fay->fork);
-        printing(fay, msg1, time_now());
+        printing(fay, msg1, time_now(),fay->print);
         pthread_mutex_lock(fay->next_fork);
-        printing(fay, msg2, time_now());
+        printing(fay, msg2, time_now(),fay->print);
         mywayofsleep(fay->eat);
-		if(total > meals * n_f && meals > 0)
-			exit(0);
-		total++;
+		fay->meals_eaten++;
 		fay->last_meal = time_now();
         pthread_mutex_unlock(fay->fork);
         pthread_mutex_unlock(fay->next_fork);
-        printing(fay, msg3, time_now());
+        printing(fay, msg3, time_now(),fay->print);
         mywayofsleep(fay->sleep);
-        printing(fay, msg4, time_now()); 
+        printing(fay, msg4, time_now(),fay->print); 
     }
 	return NULL;
 }
@@ -74,27 +70,30 @@ void mywayofsleep(unsigned long long timetosleep)
 		usleep(400);
 }
 
-void supervisor(t_philo *philo)
+int supervisor(t_philo *philo)
 {
 	unsigned long long diff = 0;
 	int i = 0;
-	//pthread_mutex_t	deadly;
-	while (i < philo[0].n_p)
+	
+	while(total_meals_eaten(philo) != 1)
 	{
+		while (i < philo[0].n_p)
+		{
 			diff = time_now() - philo[i].last_meal;
 			if (diff > (unsigned long long)philo[i].time_to_die)
 			{
-				//pthread_mutex_lock(&deadly);
 				philo[i].dead = 1;
-				printing(&philo[i],msg5,time_now());
+				printing(&philo[i],msg5,time_now(),philo[i].print);
 				i = 0;
 				while(i < philo[0].n_p)
 				{
 					pthread_mutex_destroy(philo[i].fork);
 					i++;
 				}
-				exit(0);
+				break;
 			}
 		i++;
+		}
 	}
+	return 0;
 }
