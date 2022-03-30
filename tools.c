@@ -6,7 +6,7 @@
 /*   By: rezzahra <rezzahra@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/06 13:49:02 by mac               #+#    #+#             */
-/*   Updated: 2022/03/15 03:44:45 by rezzahra         ###   ########.fr       */
+/*   Updated: 2022/03/18 09:52:54 by rezzahra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,7 @@ void	create_threads(t_philo *philo, int nf)
 	{
 		pthread_create(&philo[i].philo, NULL, &routine, (void *)&philo[i]);
 		pthread_detach(philo[i].philo);
-		usleep(100);
+		usleep(50);
 		i++;
 	}
 }
@@ -83,8 +83,10 @@ unsigned long long	time_now(void)
 
 void	printing(t_philo *philo, char *msg, long time, pthread_mutex_t *print)
 {
+	if (philo->dead == 1 && msg[0] != 'd')
+		return ;
 	pthread_mutex_lock(print);
 	printf("%llu %d %s\n", time - philo->start, philo->id, msg);
-	if (philo->dead != 1)
+	if (msg[0] != 'd')
 		pthread_mutex_unlock(print);
 }

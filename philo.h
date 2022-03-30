@@ -6,7 +6,7 @@
 /*   By: rezzahra <rezzahra@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/06 15:22:24 by mac               #+#    #+#             */
-/*   Updated: 2022/03/15 03:24:54 by rezzahra         ###   ########.fr       */
+/*   Updated: 2022/03/18 02:17:44 by rezzahra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 # define MSG2 "is eating"
 # define MSG3 "is sleeping"
 # define MSG4 "is thinking"
-# define MSG5 "has died"
+# define MSG5 "died"
 
 # include <pthread.h>
 # include <stdio.h>

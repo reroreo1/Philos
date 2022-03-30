@@ -6,7 +6,7 @@
 /*   By: rezzahra <rezzahra@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/06 14:58:02 by mac               #+#    #+#             */
-/*   Updated: 2022/03/15 03:50:19 by rezzahra         ###   ########.fr       */
+/*   Updated: 2022/03/18 09:55:17 by rezzahra         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,9 +49,9 @@ void	*routine(void *philo)
 		printing(fay, MSG1, time_now(), fay->print);
 		pthread_mutex_lock(fay->next_fork);
 		printing(fay, MSG2, time_now(), fay->print);
-		mywayofsleep(fay->eat);
-		fay->meals_eaten++;
 		fay->last_meal = time_now();
+		fay->meals_eaten++;
+		mywayofsleep(fay->eat);
 		pthread_mutex_unlock(fay->fork);
 		pthread_mutex_unlock(fay->next_fork);
 		printing(fay, MSG3, time_now(), fay->print);
@@ -72,27 +72,28 @@ void	mywayofsleep(unsigned long long timetosleep)
 
 int	supervisor(t_philo *philo)
 {
-	unsigned long long	diff;
 	int					i;
+	int					dead;
 
 	i = 0;
-	diff = 0;
 	while (i < philo[0].n_p)
 	{
-		diff = time_now() - philo[i].last_meal;
-		if (diff > (unsigned long long)philo[i].time_to_die)
+		if (time_now() - philo[i].last_meal
+			>= (unsigned long long)philo[i].time_to_die)
 		{
-			philo[i].dead = 1;
+			dead = 1;
 			printing(&philo[i], MSG5, time_now(), philo[i].print);
 			i = 0;
 			while (i < philo[0].n_p)
 			{
+				philo[i].dead = dead;
 				pthread_mutex_destroy(philo[i].fork);
 				i++;
 			}
+			pthread_mutex_destroy(philo->print);
 			return (1);
 		}
-	i++;
+		i++;
 	}
 	return (0);
 }
